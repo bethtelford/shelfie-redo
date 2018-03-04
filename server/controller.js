@@ -15,6 +15,18 @@ module.exports = {
         res.status(500).send(err);
       })
   },
+  readProduct: (req, res) => {
+    let { id } = req.params;
+    req.app.get('db').read_product(id)
+    .then(product => {
+      product = returnToDollars(product)[0];
+      res.status(200).send(product)
+    })
+    .catch(err => {
+      console.log('product error', err);
+      res.status(500).send(err);
+    })
+  },
   createProduct: (req, res) => {
     let { name, price, img } = req.body;
     req.app.get('db').create_product([name, price, img])

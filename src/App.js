@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Header from './components/header/Header';
 import Dash from './components/dash/Dash';
@@ -31,11 +32,6 @@ class App extends Component {
   updateProducts(productArr) {
     this.setState({ products: productArr })
   }
-  editSelect(product) {
-    this.setState({
-      currentProduct: product
-    })
-  }
   deleteProduct(id) {
     axios.delete(`/api/product/${id}`)
       .then(res => this.setState({ products: res.data }))
@@ -45,11 +41,21 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Form product={this.state.currentProduct} updateProducts={this.updateProducts} />
-        <Dash products={this.state.products} editSelect={this.editSelect} deleteProduct={this.deleteProduct} />
+        <Switch>
+          <Route exact path='/' render={_ => {
+            return <Dash products={this.state.products} editSelect={this.editSelect} deleteProduct={this.deleteProduct} /> 
+          }} />
+          <Route path='/add' render={_ => {
+            return <Form updateProducts={this.updateProducts} /> 
+          }} />
+          <Route path='/edit/:id' render={_ => {
+            return <Form updateProducts={this.updateProducts} /> 
+          }} />
+        
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

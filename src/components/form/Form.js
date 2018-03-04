@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 import noImage from './../../assets/no_image.jpg';
 import './Form.css';
@@ -8,17 +9,24 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
       name: '',
       price: 0,
       img: '',
       edit: false
     }
   }
-  componentWillReceiveProps(newProps) {
-    let { id, name, price, img } = newProps.product;
-    if (name) {
-      this.setState({ id, name, price, img, edit: true })
+  componentWillMount() {
+    if (this.props.match.params.id) {
+      this.setState({edit: true})
+    }
+  }
+  componentDidMount() {
+    let { id } = this.props.match.params;
+    if (id) {
+      axios.get(`/api/product/${id}`)
+      .then(res => {
+        this.setState(res.data)
+      })
     }
   }
 
@@ -41,6 +49,7 @@ class Form extends Component {
       this.handleUpdate('name', text)
     }
   }
+
   // Validates the number input for the price field
   numberInput(val) {
     // Automatically adds a zero to the dollars postition if '.' is the first thing in the input
@@ -108,7 +117,8 @@ class Form extends Component {
 
   // Submits updated product
   handleEdit() {
-    let { id, name, price, img } = this.state;
+    let { name, price, img } = this.state;
+    let { id } = this.props.match.params;
     if (name) {
       let product = {
         name,
@@ -138,6 +148,7 @@ class Form extends Component {
   }
 
   render() {
+    console.log('props', this.props)
     return (
       <div className='Form'>
         {this.state.img
@@ -161,4 +172,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default withRouter(Form);

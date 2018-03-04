@@ -21,6 +21,8 @@ massive(process.env.CONNECTION_STRING)
   app.put('/api/product/:id', ctrl.updateProduct)
   app.delete('/api/product/:id', ctrl.deleteProduct)
   
+  // Part 3
+  app.get('/api/product/:id', ctrl.readProduct)
 })
 
 // setTimeout(_=>app.get('db').all_products().then(data => console.log(data)), 6000)
