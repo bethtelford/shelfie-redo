@@ -18,7 +18,6 @@ class App extends Component {
     this.getProducts = this.getProducts.bind(this);
     this.updateProducts = this.updateProducts.bind(this);
     this.editSelect = this.editSelect.bind(this);
-    this.deleteProduct = this.deleteProduct.bind(this);
   }
   componentDidMount() {
     this.getProducts();
@@ -36,17 +35,13 @@ class App extends Component {
       currentProduct: product
     })
   }
-  deleteProduct(id) {
-    axios.delete(`/api/product/${id}`)
-      .then(res => this.setState({ products: res.data }))
-      .catch(err => console.log('delete product axios error', err))
-  }
+
   render() {
     return (
       <div className="App">
         <Header />
         <Form product={this.state.currentProduct} updateProducts={this.updateProducts} />
-        <Dash products={this.state.products} editSelect={this.editSelect} deleteProduct={this.deleteProduct} />
+        <Dash products={this.state.products} editSelect={this.editSelect} updateProducts={this.updateProducts} />
       </div>
     );
   }
