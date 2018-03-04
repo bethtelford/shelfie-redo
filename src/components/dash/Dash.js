@@ -8,7 +8,7 @@ class Dash extends Component {
     return (
       <div className='Dash'>
         {this.props.products.map((el) => {
-          return <Product key={el.id} item={el} />
+          return <Product key={el.id} item={el} editSelect={this.props.editSelect} deleteProduct={this.props.deleteProduct} />
         })}
       </div>
     );

@@ -8,11 +8,20 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: null,
       name: '',
       price: 0,
-      img: ''
+      img: '',
+      edit: false
     }
   }
+  componentWillReceiveProps(newProps) {
+    let { id, name, price, img } = newProps.product;
+    if (name) {
+      this.setState({ id, name, price, img, edit: true })
+    }
+  }
+
   // Updates inputs
   handleUpdate(prop, val) {
     this.setState({ [prop]: val })
@@ -28,7 +37,7 @@ class Form extends Component {
 
   // Validates name length
   nameInput(text) {
-    if(text.length <= 20) {
+    if (text.length <= 20) {
       this.handleUpdate('name', text)
     }
   }
@@ -97,14 +106,37 @@ class Form extends Component {
     }
   }
 
+  // Submits updated product
+  handleEdit() {
+    let { id, name, price, img } = this.state;
+    if (name) {
+      let product = {
+        name,
+        price: this.numberSubmit(price),
+        img
+      }
+      axios.put(`/api/product/${id}`, product)
+        .then(res => {
+          this.props.updateProducts(res.data);
+          this.clearInputs();
+        })
+        .catch(err => console.log('axios update erro', err))
+    } else {
+      console.log('you are missing a name and need to handle this user fail');
+    }
+  }
+
   // Clears the form
   clearInputs() {
     this.setState({
+      id: null,
       name: '',
       price: 0,
-      img: ''
+      img: '',
+      edit: false
     })
   }
+
   render() {
     return (
       <div className='Form'>
@@ -119,7 +151,10 @@ class Form extends Component {
         <input type='text' pattern="[0-9]*" value={this.state.price} onChange={e => this.numberInput(e.target.value)} />
         <div className='form_button_box'>
           <button onClick={_ => this.clearInputs()}>Cancel</button>
-          <button onClick={_ => this.handleSubmit()}>Add to Inventory</button>
+          {this.state.edit
+            ? <button onClick={_ => this.handleEdit()}>Save Changes</button>
+            : <button onClick={_ => this.handleSubmit()}>Add to Inventory</button>
+          }
         </div>
       </div>
     );
