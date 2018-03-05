@@ -44,17 +44,8 @@
     width: 450px;
   }
 }
+
 @media (min-width: 830px) {
-  .Product {
-    width: 350px;
-  }
-}
-@media (min-width: 1000px) {
-  .Product {
-    width: 450px;
-  }
-}
-@media (min-width: 1200px) {
   .Product {
     width: 600px;
     position: relative;

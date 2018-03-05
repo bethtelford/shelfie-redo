@@ -18,7 +18,6 @@ class App extends Component {
     }
     this.getProducts = this.getProducts.bind(this);
     this.updateProducts = this.updateProducts.bind(this);
-    this.editSelect = this.editSelect.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
   }
   componentDidMount() {

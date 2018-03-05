@@ -57,26 +57,6 @@
   }
 }
 
-@media (min-width: 830px) {
-  .Form {
-    position: fixed;
-    left: 45.5vw;
-    top: 150px;
-  }
-}
-
-@media (min-width: 1000px) {
-  .Form {
-    left: 53vw;
-  }
-}
-
-@media (min-width: 1200px) {
-  .Form {
-    left: 57vw;
-  }
-}
-
 @media (min-width: 1400px) {
   @media (min-height: 950px) {
     .Form {

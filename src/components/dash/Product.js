@@ -1,8 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+
 import noImg from './../../assets/no_image.jpg';
 import './Product.css';
 
-export default function Product(props) {
+function Product(props) {
   let { id, name, price, img } = props.item;
   img ? null : img = noImg;
   return (
@@ -14,8 +16,10 @@ export default function Product(props) {
       </div>
       <div className='product_button_box'>
         <button onClick={_ => props.deleteProduct(id)}>Delete</button>
-        <button onClick={_ => props.editSelect(props.item)}>Edit</button>
+        <button onClick={_ => props.history.push(`/edit/${props.item.id}`)}>Edit</button>
       </div>
     </div>
   )
 }
+
+export default withRouter(Product);

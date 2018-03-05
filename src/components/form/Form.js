@@ -17,19 +17,27 @@ class Form extends Component {
   }
   componentWillMount() {
     if (this.props.match.params.id) {
-      this.setState({edit: true})
+      this.setState({ edit: true })
     }
   }
   componentDidMount() {
     let { id } = this.props.match.params;
     if (id) {
       axios.get(`/api/product/${id}`)
-      .then(res => {
-        this.setState(res.data)
+        .then(res => {
+          this.setState(res.data)
+        })
+    }
+  }
+  componentWillReceiveProps(newProps) {
+    if (newProps.match.path !== this.props.match.path) {
+      this.setState({
+        name: '',
+        price: 0,
+        img: ''
       })
     }
   }
-
   // Updates inputs
   handleUpdate(prop, val) {
     this.setState({ [prop]: val })
@@ -107,7 +115,7 @@ class Form extends Component {
       axios.post('/api/product', product)
         .then(res => {
           this.props.updateProducts(res.data);
-          this.clearInputs();
+          this.props.history.push('/');
         })
         .catch(err => console.log('axios create error', err))
     } else {
@@ -128,7 +136,7 @@ class Form extends Component {
       axios.put(`/api/product/${id}`, product)
         .then(res => {
           this.props.updateProducts(res.data);
-          this.clearInputs();
+          this.props.history.push('/');
         })
         .catch(err => console.log('axios update erro', err))
     } else {
@@ -138,17 +146,20 @@ class Form extends Component {
 
   // Clears the form
   clearInputs() {
-    this.setState({
-      id: null,
-      name: '',
-      price: 0,
-      img: '',
-      edit: false
-    })
+    if (this.props.match.params.id) {
+      this.props.history.push('/');
+    } else {
+      this.setState({
+        id: null,
+        name: '',
+        price: 0,
+        img: '',
+        edit: false
+      })
+    }
   }
 
   render() {
-    console.log('props', this.props)
     return (
       <div className='Form'>
         {this.state.img
