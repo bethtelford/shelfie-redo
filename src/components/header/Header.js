@@ -10,7 +10,7 @@ export default function Header() {
       <img src={icon} alt='logo' />
       <h1>Shelfie</h1>
       <div className='header_link_box'>
-        <Link to='/'>Products</Link>
+        <Link to='/'>Dashboard</Link>
         <Link to='/add'>Add Inventory</Link>
       </div>
     </div>
