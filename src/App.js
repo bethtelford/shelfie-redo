@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 
 import Header from './components/header/Header';
 import Dash from './components/dash/Dash';
@@ -21,14 +21,14 @@ class App extends Component {
   }
   getInventory() {
     axios.get('/api/inventory')
-    .then(res => this.setState({inventory: res.data}))
+      .then(res => this.setState({ inventory: res.data }))
   }
   render() {
     return (
       <div className="App">
         <Header />
-        <Form getInventory={this.getInventory}/>
-        <Dash inventory={this.state.inventory}/>
+        <Form getInventory={this.getInventory} />
+        <Dash inventory={this.state.inventory} />
       </div>
     );
   }
