@@ -15,13 +15,8 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path='/' component={Dash} />
-          <Route path='/add' render={_ => {
-            return <Form updateProducts={this.updateProducts} /> 
-          }} />
-          <Route path='/edit/:id' render={_ => {
-            return <Form updateProducts={this.updateProducts} /> 
-          }} />
-        
+          <Route path='/add' component={Form} />
+          <Route path='/edit/:id' component={Form} />
         </Switch>
       </div>
     );

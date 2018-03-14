@@ -18,7 +18,7 @@ class Dash extends Component {
   }
   getInventory() {
     axios.get('/api/inventory')
-    .then(res => this.setState({inventory: res.data}))
+      .then(res => this.setState({ inventory: res.data }))
   }
   deleteProduct(id) {
     axios.delete(`/api/product/${id}`)

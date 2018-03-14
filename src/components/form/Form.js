@@ -21,7 +21,7 @@ class Form extends Component {
     if (id) {
       axios.get(`/api/product/${id}`)
         .then(res => {
-          this.setState({...res.data, edit: true})
+          this.setState({ ...res.data, edit: true })
         })
     }
   }
@@ -39,15 +39,15 @@ class Form extends Component {
   // Validates image input
   imageInput(url) {
     var img = new Image();
-    img.onload = _ => this.setState({img: url});
-    img.onerror = _ => this.setState({img: ''});
+    img.onload = _ => this.setState({ img: url });
+    img.onerror = _ => this.setState({ img: '' });
     img.src = url;
   }
 
   // Validates name length
   nameInput(text) {
-    if(text.length <= 20) {
-      this.setState({name: text})
+    if (text.length <= 20) {
+      this.setState({ name: text })
     }
   }
 
@@ -85,7 +85,7 @@ class Form extends Component {
       return;
     }
     // Updates state once input is validated
-    this.setState({price: val})
+    this.setState({ price: val })
   }
 
   // Takes price input and converts it to a number type. Also converts amount to pennies for easy db storage
