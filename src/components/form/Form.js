@@ -26,8 +26,8 @@ class Form extends Component {
     }
   }
   // Clears the inputs if the user navigates from the Edit view to the Add view.
-  componentWillReceiveProps(newProps) {
-    if (newProps.match.path !== this.props.match.path) {
+  componentDidUpdate(oldProps) {
+    if (this.props.match.path !== oldProps.match.path) {
       this.setState({
         name: '',
         price: 0,
