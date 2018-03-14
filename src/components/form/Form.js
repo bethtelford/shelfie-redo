@@ -15,20 +15,17 @@ class Form extends Component {
       edit: false
     }
   }
-  componentWillMount() {
-    if (this.props.match.params.id) {
-      this.setState({ edit: true })
-    }
-  }
+  // Gets the product information if the user has navigated to the edit view.
   componentDidMount() {
     let { id } = this.props.match.params;
     if (id) {
       axios.get(`/api/product/${id}`)
         .then(res => {
-          this.setState(res.data)
+          this.setState({...res.data, edit: true})
         })
     }
   }
+  // Clears the inputs if the user navigates from the Edit view to the Add view.
   componentWillReceiveProps(newProps) {
     if (newProps.match.path !== this.props.match.path) {
       this.setState({
@@ -38,23 +35,19 @@ class Form extends Component {
       })
     }
   }
-  // Updates inputs
-  handleUpdate(prop, val) {
-    this.setState({ [prop]: val })
-  }
 
   // Validates image input
   imageInput(url) {
     var img = new Image();
-    img.onload = _ => this.handleUpdate('img', url);
-    img.onerror = _ => this.handleUpdate('img', '');
+    img.onload = _ => this.setState({img: url});
+    img.onerror = _ => this.setState({img: ''});
     img.src = url;
   }
 
   // Validates name length
   nameInput(text) {
-    if (text.length <= 20) {
-      this.handleUpdate('name', text)
+    if(text.length <= 20) {
+      this.setState({name: text})
     }
   }
 
@@ -66,7 +59,6 @@ class Form extends Component {
     }
     // Only allows number input
     if (isNaN(Number(val))) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Splits dollars and cents apart for individual testing
@@ -90,11 +82,10 @@ class Form extends Component {
     }
     // Limits input size so price fits in db
     if (Number(val) * 100 >= 2147483647) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Updates state once input is validated
-    this.handleUpdate('price', val)
+    this.setState({price: val})
   }
 
   // Takes price input and converts it to a number type. Also converts amount to pennies for easy db storage
@@ -114,7 +105,6 @@ class Form extends Component {
       }
       axios.post('/api/product', product)
         .then(res => {
-          this.props.updateProducts(res.data);
           this.props.history.push('/');
         })
         .catch(err => console.log('axios create error', err))
@@ -125,8 +115,7 @@ class Form extends Component {
 
   // Submits updated product
   handleEdit() {
-    let { name, price, img } = this.state;
-    let { id } = this.props.match.params;
+    let { id, name, price, img } = this.state;
     if (name) {
       let product = {
         name,
@@ -135,7 +124,6 @@ class Form extends Component {
       }
       axios.put(`/api/product/${id}`, product)
         .then(res => {
-          this.props.updateProducts(res.data);
           this.props.history.push('/');
         })
         .catch(err => console.log('axios update erro', err))
@@ -150,7 +138,6 @@ class Form extends Component {
       this.props.history.push('/');
     } else {
       this.setState({
-        id: null,
         name: '',
         price: 0,
         img: '',

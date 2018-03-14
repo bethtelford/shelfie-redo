@@ -14,15 +14,15 @@ massive(process.env.CONNECTION_STRING)
   app.listen(port, _=> console.log(`Housten we have lift off on port ${port}`));
   
   // Part 1
-  app.get('/api/products', ctrl.readAllProducts)
+  app.get('/api/inventory', ctrl.readInventory)
   app.post('/api/product', ctrl.createProduct)
 
   // Part 2
-  app.put('/api/product/:id', ctrl.updateProduct)
   app.delete('/api/product/:id', ctrl.deleteProduct)
+  app.put('/api/product/:id', ctrl.updateProduct)
   
   // Part 3
-  app.get('/api/product/:id', ctrl.readProduct)
+  app.get('/api/product/:id', (req, res, next) => {console.log('product endpoint'); next()}, ctrl.readProduct)
 })
 
 // setTimeout(_=>app.get('db').all_products().then(data => console.log(data)), 6000)
