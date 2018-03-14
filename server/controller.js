@@ -8,11 +8,10 @@ module.exports = {
     req.app.get('db').read_inventory()
     .then(products => {
       products = returnToDollars(products);
-      console.log('products', products)
-      res.status(200).send(products)
+      res.status(200).send(products);
     })
     .catch(err => {
-      console.log('all_products error', err);
+      console.log('read_inventory error', err);
       res.status(500).send();
     })
   },
