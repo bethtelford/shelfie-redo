@@ -13,10 +13,8 @@ massive(process.env.CONNECTION_STRING)
   app.set('db', db);
   app.listen(port, _=> console.log(`Housten we have lift off on port ${port}`));
   
-  app.get('/api/products', ctrl.readAllProducts)
+  app.get('/api/inventory', ctrl.readInventory)
   app.post('/api/product', ctrl.createProduct)
   
 })
-
-// setTimeout(_=>app.get('db').all_products().then(data => console.log(data)), 6000)
 

@@ -6,8 +6,8 @@ let returnToDollars = arr => arr.map((el, i) => {
 })
 
 module.exports = {
-  readAllProducts: (req, res) => {
-    req.app.get('db').all_products()
+  readInventory: (req, res) => {
+    req.app.get('db').read_inventory()
     .then(products => {
       products = returnToDollars(products);
       console.log('products', products)

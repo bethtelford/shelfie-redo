@@ -7,7 +7,7 @@ class Dash extends Component {
   render() {
     return (
       <div className='Dash'>
-        {this.props.products.map((el) => {
+        {this.props.inventory.map((el) => {
           return <Product key={el.id} item={el} />
         })}
       </div>
