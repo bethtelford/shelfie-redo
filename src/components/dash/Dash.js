@@ -11,13 +11,13 @@ class Dash extends Component {
   }
   deleteProduct(id) {
     axios.delete(`/api/product/${id}`)
-      .then(res => this.props.updateProducts(res.data))
+      .then(res => this.props.getInventory())
       .catch(err => console.log('delete product axios error', err))
   }
   render() {
     return (
       <div className='Dash'>
-        {this.props.products.map((el) => {
+        {this.props.inventory.map((el) => {
           return <Product key={el.id} item={el} editSelect={this.props.editSelect} deleteProduct={this.deleteProduct} />
         })}
       </div>

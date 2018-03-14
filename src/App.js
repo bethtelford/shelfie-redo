@@ -12,23 +12,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: [],
+      inventory: [],
       currentProduct: {}
     }
-    this.getProducts = this.getProducts.bind(this);
-    this.updateProducts = this.updateProducts.bind(this);
+    this.getInventory = this.getInventory.bind(this);
     this.editSelect = this.editSelect.bind(this);
   }
   componentDidMount() {
-    this.getProducts();
+    this.getInventory();
   }
-  getProducts() {
-    axios.get('/api/products')
-      .then(res => this.setState({ products: res.data }))
-      .catch(err => console.log('get all products axios error', err))
-  }
-  updateProducts(productArr) {
-    this.setState({ products: productArr })
+  getInventory() {
+    axios.get('/api/inventory')
+    .then(res => this.setState({inventory: res.data}))
   }
   editSelect(product) {
     this.setState({
@@ -40,8 +35,8 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Form product={this.state.currentProduct} updateProducts={this.updateProducts} />
-        <Dash products={this.state.products} editSelect={this.editSelect} updateProducts={this.updateProducts} />
+        <Form product={this.state.currentProduct} getInventory={this.getInventory} />
+        <Dash inventory={this.state.inventory} editSelect={this.editSelect} getInventory={this.getInventory} />
       </div>
     );
   }
