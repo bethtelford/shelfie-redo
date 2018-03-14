@@ -15,10 +15,10 @@ class Form extends Component {
     }
   }
   // If a product has been selected, and that product is a new selection, set the product details on state
-  componentWillReceiveProps(newProps) {
-    let { id, name, price, img } = newProps.product;
-    if (id && id !== this.props.product.id) {
-      this.setState({ id, name, price, img, edit: true })
+  componentDidUpdate(oldProps) {
+    let { id, name, price, img } = this.props.product;
+    if (oldProps.product.id !== this.props.product.id) {
+      this.setState({ id, name, price, img, edit: true });
     }
   }
 
