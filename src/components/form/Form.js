@@ -13,25 +13,22 @@ class Form extends Component {
       img: ''
     }
   }
-  // Updates inputs
-  handleUpdate(prop, val) {
-    this.setState({ [prop]: val })
-  }
 
   // Validates image input
   imageInput(url) {
     var img = new Image();
-    img.onload = _ => this.handleUpdate('img', url);
-    img.onerror = _ => this.handleUpdate('img', '');
+    img.onload = _ => this.setState({img: url});
+    img.onerror = _ => this.setState({img: ''});
     img.src = url;
   }
 
   // Validates name length
   nameInput(text) {
     if(text.length <= 20) {
-      this.handleUpdate('name', text)
+      this.setState({name: text})
     }
   }
+
   // Validates the number input for the price field
   numberInput(val) {
     // Automatically adds a zero to the dollars postition if '.' is the first thing in the input
@@ -40,7 +37,6 @@ class Form extends Component {
     }
     // Only allows number input
     if (isNaN(Number(val))) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Splits dollars and cents apart for individual testing
@@ -64,11 +60,10 @@ class Form extends Component {
     }
     // Limits input size so price fits in db
     if (Number(val) * 100 >= 2147483647) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Updates state once input is validated
-    this.handleUpdate('price', val)
+    this.setState({price: val})
   }
 
   // Takes price input and converts it to a number type. Also converts amount to pennies for easy db storage
@@ -88,7 +83,7 @@ class Form extends Component {
       }
       axios.post('/api/product', product)
         .then(res => {
-          this.props.updateProducts(res.data);
+          this.props.getInventory();
           this.clearInputs();
         })
         .catch(err => console.log('axios create error', err))
