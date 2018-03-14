@@ -22,9 +22,8 @@ module.exports = {
     console.log('body', req.body)
     let {name, price, img} = req.body;
     req.app.get('db').create_product([name, price, img])
-    .then(products => {
-      products = returnToDollars(products);
-      res.status(200).send(products)
+    .then(_ => {
+      res.status(200).send()
     })
     .catch(err => {
       console.log('create_product error', err);
