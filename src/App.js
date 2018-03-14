@@ -23,7 +23,7 @@ class App extends Component {
   }
   getInventory() {
     axios.get('/api/inventory')
-    .then(res => this.setState({inventory: res.data}))
+      .then(res => this.setState({ inventory: res.data }))
   }
   editSelect(product) {
     this.setState({
