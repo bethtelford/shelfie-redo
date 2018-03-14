@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 
 import Header from './components/header/Header';
 import Dash from './components/dash/Dash';
@@ -12,27 +12,31 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: []
+      inventory: [],
+      currentProduct: {}
     }
-    this.getProducts = this.getProducts.bind(this);
-    this.updateProducts = this.updateProducts.bind(this);
+    this.getInventory = this.getInventory.bind(this);
+    this.editSelect = this.editSelect.bind(this);
   }
   componentDidMount() {
-    this.getProducts();
+    this.getInventory();
   }
-  getProducts() {
-    axios.get('/api/products')
-    .then(res => this.setState({products: res.data}))
+  getInventory() {
+    axios.get('/api/inventory')
+    .then(res => this.setState({inventory: res.data}))
   }
-  updateProducts(productArr) {
-    this.setState({products: productArr})
+  editSelect(product) {
+    this.setState({
+      currentProduct: product
+    })
   }
+
   render() {
     return (
       <div className="App">
         <Header />
-        <Form updateProducts={this.updateProducts}/>
-        <Dash products={this.state.products}/>
+        <Form product={this.state.currentProduct} getInventory={this.getInventory} />
+        <Dash inventory={this.state.inventory} editSelect={this.editSelect} getInventory={this.getInventory} />
       </div>
     );
   }

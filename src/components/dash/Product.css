@@ -24,6 +24,20 @@
 .product_price {
   font-size: 20px;
 }
+.product_button_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+.product_button_box > button {
+  padding: 10px;
+  background-color: #3ad886;
+  border-radius: 7px;
+  border: none;
+  font-family: Open Sans, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+}
 
 @media (min-width: 500px) {
   .Product {
@@ -54,5 +68,11 @@
     top: 5px;
     left: 350px;
     flex-direction: column;
+  }
+  .product_button_box {
+    position: absolute;
+    bottom: 15px;
+    left: 350px;
+    right: 15px;
   }
 }

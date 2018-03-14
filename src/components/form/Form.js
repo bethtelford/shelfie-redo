@@ -8,28 +8,32 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: null,
       name: '',
       price: 0,
       img: ''
     }
   }
-  // Updates inputs
-  handleUpdate(prop, val) {
-    this.setState({ [prop]: val })
+  // If a product has been selected, and that product is a new selection, set the product details on state
+  componentWillReceiveProps(newProps) {
+    let { id, name, price, img } = newProps.product;
+    if (id && id !== this.props.product.id) {
+      this.setState({ id, name, price, img, edit: true })
+    }
   }
 
   // Validates image input
   imageInput(url) {
     var img = new Image();
-    img.onload = _ => this.handleUpdate('img', url);
-    img.onerror = _ => this.handleUpdate('img', '');
+    img.onload = _ => this.setState({img: url});
+    img.onerror = _ => this.setState({img: ''});
     img.src = url;
   }
 
   // Validates name length
   nameInput(text) {
     if(text.length <= 20) {
-      this.handleUpdate('name', text)
+      this.setState({name: text})
     }
   }
   // Validates the number input for the price field
@@ -40,7 +44,6 @@ class Form extends Component {
     }
     // Only allows number input
     if (isNaN(Number(val))) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Splits dollars and cents apart for individual testing
@@ -64,11 +67,10 @@ class Form extends Component {
     }
     // Limits input size so price fits in db
     if (Number(val) * 100 >= 2147483647) {
-      this.handleUpdate('price', this.state.price)
       return;
     }
     // Updates state once input is validated
-    this.handleUpdate('price', val)
+    this.setState({price: val})
   }
 
   // Takes price input and converts it to a number type. Also converts amount to pennies for easy db storage
@@ -88,7 +90,7 @@ class Form extends Component {
       }
       axios.post('/api/product', product)
         .then(res => {
-          this.props.updateProducts(res.data);
+          this.props.getInventory();
           this.clearInputs();
         })
         .catch(err => console.log('axios create error', err))
@@ -97,14 +99,36 @@ class Form extends Component {
     }
   }
 
+  // Submits updated product
+  handleEdit() {
+    let { id, name, price, img } = this.state;
+    if (name) {
+      let product = {
+        name,
+        price: this.numberSubmit(price),
+        img
+      }
+      axios.put(`/api/product/${id}`, product)
+        .then(res => {
+          this.props.getInventory();
+          this.clearInputs();
+        })
+        .catch(err => console.log('axios update erro', err))
+    } else {
+      console.log('you are missing a name and need to handle this user fail');
+    }
+  }
+
   // Clears the form
   clearInputs() {
     this.setState({
+      id: null,
       name: '',
       price: 0,
       img: ''
     })
   }
+
   render() {
     return (
       <div className='Form'>
@@ -119,7 +143,10 @@ class Form extends Component {
         <input type='text' pattern="[0-9]*" value={this.state.price} onChange={e => this.numberInput(e.target.value)} />
         <div className='form_button_box'>
           <button onClick={_ => this.clearInputs()}>Cancel</button>
-          <button onClick={_ => this.handleSubmit()}>Add to Inventory</button>
+          {this.state.id
+            ? <button onClick={_ => this.handleEdit()}>Save Changes</button>
+            : <button onClick={_ => this.handleSubmit()}>Add to Inventory</button>
+          }
         </div>
       </div>
     );
