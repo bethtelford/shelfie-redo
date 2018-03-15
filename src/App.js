@@ -35,7 +35,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Form product={this.state.currentProduct} getInventory={this.getInventory} />
+        <Form product={this.state.currentProduct} editSelect={this.editSelect} getInventory={this.getInventory} />
         <Dash inventory={this.state.inventory} editSelect={this.editSelect} getInventory={this.getInventory} />
       </div>
     );

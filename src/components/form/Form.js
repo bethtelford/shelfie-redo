@@ -121,6 +121,9 @@ class Form extends Component {
 
   // Clears the form
   clearInputs() {
+    if (this.state.id) {
+      this.props.editSelect({});
+    }
     this.setState({
       id: null,
       name: '',
