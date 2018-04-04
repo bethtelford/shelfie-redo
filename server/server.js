@@ -11,9 +11,10 @@ app.use(bodyParser.json());
 massive(process.env.CONNECTION_STRING)
       .then(db => {
             app.set('db', db);
-            app.listen(port, _ => console.log(`Housten we have lift off on port ${port}`));
-
+            
             // Part 1
             app.get('/api/inventory', ctrl.readInventory)
             app.post('/api/product', ctrl.createProduct)
+            
+            app.listen(port, _ => console.log(`Housten we have lift off on port ${port}`));
       })
